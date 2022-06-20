@@ -1,37 +1,66 @@
-function preload(){
-    lip_img = loadImage('https://i.postimg.cc/sg2p0k0S/PNGPIX-COM-Lips-PNG-Transparent-Image-1-500x313.png');
-}
+song1 = "";
+song2 = "";
+leftWristX = 0;
+leftWristY = 0;
+rightWristX = 0;
+rightWristY = 0;
+scoreLeftWrist = 0;
+
 
 function setup(){
-    canvas = createCanvas(400, 300);
+    canvas = createCanvas(800, 600);
     canvas.center();
+
     video = createCapture(VIDEO);
-    video.size(400,300);
     video.hide();
 
     poseNet = ml5.poseNet(video, modelLoaded);
-    poseNet.on("pose", gotPoses);
+    poseNet.on('pose', gotPoses);
+
 }
+
 function modelLoaded(){
-    console.log("PoseNet is here UwU.");
+    console.log("PoseNet Has Started");
 }
-function gotPoses(results){
-    if (results.length > 0) {
-       console.log(results);
-       lipX = results[0].pose.nose.x - 25;
-       lipY = results[0].pose.nose.y + 15;
-    }
-};
 
 function draw(){
-    image(video, 0, 0, 400, 300);
-    image(lip_img, lipX, lipY, 50, 20);
-    
-    
+    image(video, 0, 0, 800, 600);
+
+    fill("#FF0000");
+   stroke("#FF0000");
+
 }
 
-function take_snapshot(){
-    save('Picture.png');
+function preload(){
+    song1 = loadSound("music.mp3");
+    song2 = loadSound("music2.mp3");
 }
-lipX = 0;
-lipY = 0;
+function play(){
+    song1.play();
+    song1.setVolume(1);
+    song1.rate(1);
+
+    song2.play();
+    song2.setVolume(1);
+    song2.rate(1);
+}
+
+function modelLoaded(){
+    console.log("PoseNet Has Started");
+}
+
+function gotPoses(results){
+    if (results.length > 0) {
+        console.log(results);
+        scoreLeftWrist = results[0].pose.keypoints[9].score;
+        console.log("scoreLeftWrist = " + scoreLeftWrist);
+
+        leftWristX = results[0].pose.leftWrist.x;
+        leftWristY = results[0].pose.leftWrist.y;
+        console.log("leftWristX = " + leftWristX + "leftWristY = " + leftWristY);
+
+        rightWristX = results[0].pose.rightWrist.x;
+        rightWristY = results[0].pose.rightWrist.y;
+        console.log("rightWristX = " + rightWristX + "rightWristY = " + rightWristY);
+    }
+}
