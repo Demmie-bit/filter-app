@@ -5,6 +5,7 @@ leftWristY = 0;
 rightWristX = 0;
 rightWristY = 0;
 scoreLeftWrist = 0;
+scoreRightWrist = 0;
 
 
 function setup(){
@@ -29,6 +30,18 @@ function draw(){
     fill("#FF0000");
    stroke("#FF0000");
 
+   circle(rightWristX, rightWristY, 20);
+
+   if(scoreRightWrist > 0.2){
+        song1.play();
+        document.getElementById("name").innerHTML = "Harry Potter";
+   }
+
+   if(scoreLeftWrist > 0.2){
+    song2.play();
+    document.getElementById("name").innerHTML = "Peter pan";
+}
+   
 }
 
 function preload(){
@@ -50,6 +63,8 @@ function modelLoaded(){
 }
 
 function gotPoses(results){
+        results[0].pose.keypoints[10].score;
+
     if (results.length > 0) {
         console.log(results);
         scoreLeftWrist = results[0].pose.keypoints[9].score;
